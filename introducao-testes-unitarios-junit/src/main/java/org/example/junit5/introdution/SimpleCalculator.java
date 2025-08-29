@@ -6,4 +6,9 @@ public class SimpleCalculator {
         return numberA + numberB;
 
     }
+
+    public float divide (int numberA, int numberB) {
+        return (float) numberA / numberB;
+
+    }
 }

@@ -44,6 +44,35 @@ class SimpleCalculatorTest {
         assertNull(s3);
         assertNotNull(s1);
 
+    }
 
+    // Equivalence Partitioning
+    // Equivalence classes are a way of dividing input data into valid and invalid partitions
+    // Valid partitions: positive numbers, negative numbers, zero
+    // Invalid partitions: non-numeric values (e.g., strings, special characters)
+    // Test cases should cover at least one value from each partition
+    // For example, testing the addition of two positive numbers, two negative numbers, and zero
+
+    @Test
+    @DisplayName("Deve retornar um valor inteiro na divisão")
+    void shouldReturnAnIntegerValueWhenDividing() {
+        var calculator = new SimpleCalculator();
+        float result = calculator.divide(4, 2);
+        assertEquals(2,result);
+    }
+
+    @Test
+    @DisplayName("Deve retornar um valor negativo na divisão")
+    void shouldReturnAnNegativeValueWhenDividing() {
+        var calculator = new SimpleCalculator();
+        float result = calculator.divide(4, -2);
+        assertEquals(-2,result);
+    }
+    @Test
+    @DisplayName("Deve retornar um número decimal na divisão")
+    void shouldReturnADecimalValueWhenDividing() {
+        var calculator = new SimpleCalculator();
+        float result = calculator.divide(10, 3);
+        assertEquals(3.33,result, 0.01); // verified until 2 decimal places, error margin of 0.01
     }
 }
