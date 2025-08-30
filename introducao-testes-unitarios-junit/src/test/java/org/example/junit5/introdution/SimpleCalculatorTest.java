@@ -1,6 +1,7 @@
 package org.example.junit5.introdution;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -19,7 +21,7 @@ class SimpleCalculatorTest {
 
     @Test
     @DisplayName("Deve retornar 4 quando somar 2 + 2")
-     void twoPlusTwoShouldEqualFour() {
+    void twoPlusTwoShouldEqualFour() {
         var calculator = new SimpleCalculator();
         // static method import, this way we don't need to use Assertions.assertEquals, what makes the code cleaner and legible
         assertEquals(4, calculator.add(2, 2), "2 + 2 should equal 4");
@@ -58,7 +60,7 @@ class SimpleCalculatorTest {
     void shouldReturnAnIntegerValueWhenDividing() {
         var calculator = new SimpleCalculator();
         float result = calculator.divide(4, 2);
-        assertEquals(2,result);
+        assertEquals(2, result);
     }
 
     @Test
@@ -66,13 +68,38 @@ class SimpleCalculatorTest {
     void shouldReturnAnNegativeValueWhenDividing() {
         var calculator = new SimpleCalculator();
         float result = calculator.divide(4, -2);
-        assertEquals(-2,result);
+        assertEquals(-2, result);
     }
+
     @Test
     @DisplayName("Deve retornar um número decimal na divisão")
     void shouldReturnADecimalValueWhenDividing() {
         var calculator = new SimpleCalculator();
         float result = calculator.divide(10, 3);
-        assertEquals(3.33,result, 0.01); // verified until 2 decimal places, error margin of 0.01
+        assertEquals(3.33, result, 0.01); // verified until 2 decimal places, error margin of 0.01
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção na divisão por zero")
+        // Verify that dividing by zero throws an ArithmeticException
+    void shouldReturnInfinityWhenDividingByZero_JUnit5() {
+        ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
+            float result = 10 / 0;
+
+        });
+        assertEquals("/ by zero", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção na divisão por zero")
+        // Verify that dividing by zero throws an ArithmeticException
+    void shouldReturnInfinityWhenDividingByZero_JUnit4() {
+        try {
+            float result = 10 / 0;
+            Assertions.fail("Deveria ser lançada uma ArithmeticException");
+        } catch (ArithmeticException e) {
+            assertEquals("/ by zero", e.getMessage());
+        }
+    }
+
 }
