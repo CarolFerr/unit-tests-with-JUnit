@@ -1,8 +1,6 @@
 package org.example.barriga.domain;
 import org.example.barriga.domain.exceptions.ValidationException;
 
-import java.util.Map;
-
 // Simple POJO (Plain Old Java Object) class representing a User entity
 // It encapsulates user attributes and provides a constructor and getter methods
 // This object is immutable after creation, as there are no setter methods
@@ -15,21 +13,17 @@ public class Usuario {
     private final String senha;
 
     public Usuario(Long id, String nome, String email, String senha) {
-        validar(Map.of(
-                "Nome", nome,
-                "Email", email,
-                "Senha", senha
-        ));
+        validar(nome, email, senha);
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     }
 
-    private void validar(Map<String, String> campos) {
-        campos.forEach((campo, valor) -> {
-            if (valor == null) throw new ValidationException(campo + " é obrigatório");
-        });
+    private void validar(String nome, String email, String senha) {
+        if (nome == null) throw new ValidationException("Nome é obrigatório");
+        if (email == null) throw new ValidationException("Email é obrigatório");
+        if (senha == null) throw new ValidationException("Senha é obrigatória");
     }
 
     public Long getId() { return id; }
