@@ -23,7 +23,11 @@ public class Usuario {
     private void validar(String nome, String email, String senha) {
         if (nome == null) throw new ValidationException("Nome é obrigatório");
         if (email == null) throw new ValidationException("Email é obrigatório");
-        if (senha == null) throw new ValidationException("Senha é obrigatória");
+        if (senha == null) {
+            throw new ValidationException("Senha é obrigatória");
+        } else if (senha.length() < 6) {
+            throw new ValidationException("Senha deve ter no mínimo 6 caracteres");
+        }
     }
 
     public Long getId() { return id; }

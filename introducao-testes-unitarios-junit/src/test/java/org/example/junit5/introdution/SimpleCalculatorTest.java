@@ -8,6 +8,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,4 +146,21 @@ class SimpleCalculatorTest {
         }
     }
 
+    // Parameterized Tests
+    @ParameterizedTest
+    @ValueSource(strings = {"Test1", "Test2", "Test3"})
+    void shouldTestStrings(String param) {
+        System.out.println(param);
+        assertNotNull(param);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "4, 2, 2",
+            "4, -2, -2"
+    })
+    void shouldDivideCorrectly(int num, int den, int res) {
+        float result = calculator.divide(num, den);
+        assertEquals(res, result);
+    }
 }
