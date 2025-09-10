@@ -4,6 +4,8 @@ import org.example.barriga.domain.Usuario;
 import org.example.barriga.domain.exceptions.ValidationException;
 import org.example.barriga.service.repositories.UsuarioRepository;
 
+import java.util.Optional;
+
 // This class has no idea about how the user is being saved
 // This class has no idea about the database, SQL, etc.
 // Who going to save need find a way to save and send for this class by constructor
@@ -25,5 +27,9 @@ public class UsuarioService {
                 .ifPresent(user -> {
                     throw new ValidationException(String.format("Usuário %s já cadastrado!", usuario.getEmail()));});
         return repository.salvar(usuario);
+    }
+
+    public Optional<Usuario> getUserByEmail(String email) {
+        return repository.getUserByEmail(email);
     }
 }
