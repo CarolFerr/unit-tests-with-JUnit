@@ -12,7 +12,7 @@ import static org.example.barriga.domain.builders.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Domain: Usuario")
-class UsuarioTest {
+public class UsuarioTest {
 
     @Test
     @DisplayName("Deve criar usuário com dados válidos")
