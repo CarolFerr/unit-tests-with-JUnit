@@ -1,6 +1,7 @@
 package org.example.barriga.service;
 
 import org.example.barriga.domain.Usuario;
+import org.example.barriga.domain.exceptions.ValidationException;
 import org.example.barriga.service.repositories.UsuarioRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,11 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.example.barriga.domain.builders.UsuarioBuilder.umUsuario;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UsuarioServiceTest {
+public class UsuarioServiceTest {
     // Means I want the mockito create it a mock for this class
     @Mock
     private UsuarioRepository repository;
@@ -85,7 +87,7 @@ class UsuarioServiceTest {
         // When the method was called at least once
         verify(repository, Mockito.atLeastOnce()).getUserByEmail("novoUser@email.com");
         // When the method was never called
-        verify(repository, Mockito.never()).getUserByEmail("outroUser@email.com");
+        verify(repository, never()).getUserByEmail("outroUser@email.com");
         // Verify if there were no more interactions with the mock, but if at least one interaction was made
         // this verification will fail
         Mockito.verifyNoMoreInteractions(repository);
@@ -113,5 +115,19 @@ class UsuarioServiceTest {
         verify(repository).getUserByEmail(userToSave.getEmail());
         // Guarantee that the salvar method was called with userToSave
         verify(repository).salvar(userToSave);
+    }
+
+    @Test
+    void shouldRejectExistingUser() {
+        Usuario userToSave = umUsuario().comId(null).agora();
+        when(repository.getUserByEmail(userToSave.getEmail()))
+                .thenReturn(Optional.of(umUsuario().agora()));
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                service.salvar(userToSave));
+        Assertions.assertTrue(exception.getMessage().endsWith("já cadastrado!"));
+
+        // This predict in case of code refactoring and the salvar method wasn't called
+        verify(repository, never()).salvar(userToSave);
     }
 }
